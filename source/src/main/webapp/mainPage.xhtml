@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"      
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+    </h:head>
+    <h:body>
+        <h:form>
+            
+            <p:layout fullPage="true">
+                <p:growl id="msgs" showDetail="true" autoUpdate="true"/>
+                <p:layoutUnit position="north">
+                    <p:commandButton value="Show basket" update="basketDataTable" oncomplete="PF('baskedDialogVar').show();" />
+                </p:layoutUnit>
+
+                <p:layoutUnit position="west" size="175" header="Categories">
+                    <p:menu id="menuPanel" style="width: 150px" model="#{categoryController.categoryMenu}"  />
+                </p:layoutUnit>
+
+                <p:layoutUnit position="center" >
+                    <f:facet name="header" >
+                        <p:outputLabel id="centerPanelHeader"  value="Selected category > #{categoryController.selectedCategory.name}" rendered="#{categoryController.selectedCategory != null}"/>
+                    </f:facet>
+                    <p:outputPanel id="centerPanel">
+                        <p:outputLabel value="Welcome to the Simple shop. Please select a product category." rendered="#{categoryController.selectedCategory == null}"/>
+                        <p:panel rendered="#{categoryController.selectedCategory != null}">
+                            <p:outputLabel value="#{categoryController.selectedCategory.description}"/>
+                        </p:panel>
+                        <p:dataTable value="#{productController.productList}" id="productDataTable" var="product" rendered="#{categoryController.selectedCategory != null}" style="margin-top: 10px">
+                            <f:facet name="header">
+                                <p:outputLabel value="Products" />
+                            </f:facet>
+                            <p:column width="100" headerText="Category">
+                                <p:outputLabel value="#{product.category.name}"/>
+                            </p:column>
+                            <p:column headerText="Name">
+                                <p:outputLabel value="#{product.name}"/>
+                            </p:column>
+                            <p:column width="200" headerText="Price">
+                                <p:outputLabel value="#{product.price} "/>
+                                <p:outputLabel value="#{product.currency}"/>
+                            </p:column>
+                            <p:column width="180" headerText="Buy">
+                                <p:commandButton value="Add to basket" actionListener="#{productController.addToBasket(product)}" update="basketDataTable"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:outputPanel>
+                </p:layoutUnit>
+
+            </p:layout>
+        </h:form>
+        
+        <p:dialog widgetVar="baskedDialogVar" header="Basket" closable="true" modal="true" width="1100" resizable="false" >
+            <ui:include src="basketDialog.xhtml"/>
+        </p:dialog>
+        
+        <p:dialog widgetVar="orderDialogVar" header="Order" closable="true" modal="true" width="1100" resizable="false" >
+            <ui:include src="orderDialog.xhtml"/>
+        </p:dialog>
+    </h:body>
+</html>
