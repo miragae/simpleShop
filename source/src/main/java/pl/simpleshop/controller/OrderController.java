@@ -107,9 +107,6 @@ public class OrderController implements Serializable{
     }
 
     public void order(){
-        if(customer != null) {
-            currentOrder.setCustomer(customer);
-        }
         customerDao.saveOrUpdate(currentOrder.getCustomer());
 
         currentOrder.setEmployee(employee);
