@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+>
+<h:head>
+</h:head>
+<h:body>
+    <h:form prependId="false">
+        <p:outputPanel>
+            <p:dataTable value="#{supplierController.supplierProducts}" id="supplierProductsDataTable" var="product" style="margin-top: 10px">
+                <f:facet name="header">
+                    <p:outputLabel value="Products" />
+                </f:facet>
+                <p:column headerText="Name">
+                    <p:outputLabel value="#{product.name}"/>
+                </p:column>
+                <p:column width="40" headerText="Price">
+                    <p:outputLabel value="#{product.unitPrice}"/>
+                </p:column>
+                <p:column headerText="Quantity/Unit">
+                    <p:outputLabel value="#{product.quantityPerUnit}"/>
+                </p:column>
+                <p:column headerText="In stock">
+                    <p:outputLabel value="#{product.unitsInStock}"/>
+                </p:column>
+                <p:column headerText="On order">
+                    <p:outputLabel value="#{product.unitsOnOrder}"/>
+                </p:column>
+                <p:column headerText="Reorder level">
+                    <p:outputLabel value="#{product.reorderLevel}"/>
+                </p:column>
+                <p:column headerText="Discontinued">
+                    <p:selectBooleanCheckbox  value="#{product.discontinued}" disabled="true" />
+                </p:column>
+                <p:column width="180" headerText="Buy">
+                    <p:commandButton value="Add to basket" actionListener="#{productController.addToBasket(product)}" update="basketDataTable" disabled="#{product.unitsInStock == 0}"/>
+                </p:column>
+            </p:dataTable>
+            <p:commandButton value="Close" style="float: right" onclick="PF('supplierProductsDialogVar').hide();" />
+        </p:outputPanel>
+    </h:form>
+</h:body>
+</html>

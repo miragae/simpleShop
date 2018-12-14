@@ -1,32 +1,30 @@
 package pl.simpleshop.model;
 
 import java.io.Serializable;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
-/**
- *
- * @author Michał Lal
- */
+
 @Entity
+@Table(name = "categories")
 public class Category implements Serializable {
 
-    private Long id;
+    private int id;
     private String name;
     private String description;
+    private String picture;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    public Long getId() {
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "CategoryID")
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
+    @Column(name = "CategoryName")
     public String getName() {
         return name;
     }
@@ -35,6 +33,7 @@ public class Category implements Serializable {
         this.name = name;
     }
 
+    @Column(name = "Description", columnDefinition = "text")
     public String getDescription() {
         return description;
     }
@@ -43,4 +42,12 @@ public class Category implements Serializable {
         this.description = description;
     }
 
+    @Column(name = "Picture")
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
 }

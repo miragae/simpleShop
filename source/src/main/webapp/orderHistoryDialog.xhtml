@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+>
+<h:head>
+</h:head>
+<h:body>
+    <h:form prependId="false">
+        <p:outputPanel>
+            <p:dataTable value="#{orderController.orderList}" id="orderHistoryDataTable" var="order" style="margin-top: 10px" paginator="true" rows="10">
+                <f:facet name="header">
+                    <p:outputLabel value="Order history" />
+                </f:facet>
+                <p:column headerText="Customer">
+                    <p:outputLabel value="#{order.customer == null ? '' : order.customer.companyName}"/>
+                </p:column>
+                <p:column headerText="Employee">
+                    <p:outputLabel value="#{order.employee == null ? '' : order.employee.firstName}
+                                                       #{order.employee == null ? '' : order.employee.lastName}"/>
+                </p:column>
+                <p:column headerText="Ship via">
+                    <p:outputLabel value="#{order.shipVia == null ? '' : order.shipVia.companyName}"/>
+                </p:column>
+                <p:column headerText="Order date">
+                    <p:outputLabel value="#{order.orderDate}"/>
+                </p:column>
+                <p:column headerText="Required date">
+                    <p:outputLabel value="#{order.requiredDate}"/>
+                </p:column>
+                <p:column>
+                    <p:commandButton value="Delete"
+                                     actionListener="#{orderController.deleteOrder(order)}"
+                                     update="orderHistoryDataTable"
+                    />
+                </p:column>
+            </p:dataTable>
+            <p:commandButton value="Update" actionListener="#{orderController.updateOrderList}"
+                             update="orderHistoryDataTable" style="float: left"/>
+            <p:commandButton value="Close" style="float: right" onclick="PF('orderHistoryDialogVar').hide();" />
+        </p:outputPanel>
+    </h:form>
+</h:body>
+</html>

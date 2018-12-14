@@ -9,34 +9,248 @@
     </h:head>
     <h:body>
         <h:form prependId="false">
-            <p:outputPanel>
-                
-                <table>
-                    <tr>
-                        <td>
-                            <p:outputLabel value="First name"/>
-                        </td>
-                        <td>
-                            <p:inputText value="#{orderController.currentOrder.firstName}"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <p:outputLabel value="Last name"/>
-                        </td>
-                        <td>
-                            <p:inputText value="#{orderController.currentOrder.lastName}"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <p:outputLabel value="Delivery address"/>
-                        </td>
-                        <td>
-                            <p:inputText value="#{orderController.currentOrder.address}"/>
-                        </td>
-                    </tr>
-                </table>
+            <p:outputPanel id="orderDialogPanel">
+                <p:panel id="customerPanel" widgetVar="customerPanelVar" header="Customer" collapsed="true" >
+                    <f:facet name="actions">
+                        <p:commandButton value="New" style="float: right" actionListener="#{orderController.createNewCustomer()}"
+                                         onclick="PF('customerPanelVar').slideUp();" oncomplete="PF('customerPanelVar').slideDown();" update="customerPanel"/>
+                        <p:autoComplete value="#{orderController.customer}" completeMethod="#{orderController.completeCustomers}" style="float: right"
+                                        var="customer" itemLabel="#{customer.displayName}" itemValue="#{customer}" size="30"
+                                        converter="#{customerConverter}">
+                            <p:ajax event="itemSelect" listener="#{orderController.selectCustomer()}" oncomplete="PF('customerPanelVar').slideDown();" update="customerPanel"/>
+                        </p:autoComplete>
+                        <p:outputLabel value="Search: " style="float: right; padding: 5px 10px;"/>
+                    </f:facet>
+                        <table>
+                            <tr>
+                                <td>
+                                    <p:outputLabel style="padding-left: 5px;"  value="Company name"/>
+                                </td>
+                                <td>
+                                    <p:inputText value="#{orderController.currentOrder.customer.companyName}"/>
+                                </td>
+                                <td>
+                                    <p:outputLabel style="padding-left: 5px;"  value="Address"/>
+                                </td>
+                                <td>
+                                    <p:inputText value="#{orderController.currentOrder.customer.address}"/>
+                                </td>
+                                <td>
+                                    <p:outputLabel style="padding-left: 5px;"  value="Phone"/>
+                                </td>
+                                <td>
+                                    <p:inputText value="#{orderController.currentOrder.customer.phone}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p:outputLabel style="padding-left: 5px;"  value="Contact name"/>
+                                </td>
+                                <td>
+                                    <p:inputText value="#{orderController.currentOrder.customer.contactName}"/>
+                                </td>
+                                <td>
+                                    <p:outputLabel style="padding-left: 5px;"  value="City"/>
+                                </td>
+                                <td>
+                                    <p:inputText value="#{orderController.currentOrder.customer.city}"/>
+                                </td>
+                                <td>
+                                    <p:outputLabel style="padding-left: 5px;"  value="Fax"/>
+                                </td>
+                                <td>
+                                    <p:inputText value="#{orderController.currentOrder.customer.fax}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p:outputLabel style="padding-left: 5px;"  value="Contact title"/>
+                                </td>
+                                <td>
+                                    <p:inputText value="#{orderController.currentOrder.customer.contactTitle}"/>
+                                </td>
+                                <td>
+                                    <p:outputLabel style="padding-left: 5px;"  value="Region"/>
+                                </td>
+                                <td>
+                                    <p:inputText value="#{orderController.currentOrder.customer.region}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td/><td/>
+                                <td>
+                                    <p:outputLabel style="padding-left: 5px;"  value="Postal code"/>
+                                </td>
+                                <td>
+                                    <p:inputText value="#{orderController.currentOrder.customer.postalCode}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td/><td/>
+                                <td>
+                                    <p:outputLabel style="padding-left: 5px;"  value="Country"/>
+                                </td>
+                                <td>
+                                    <p:inputText value="#{orderController.currentOrder.customer.country}"/>
+                                </td>
+                            </tr>
+                        </table>
+                </p:panel>
+                <p:panel id="employeePanel" widgetVar="employeePanelVar" header="Employee" collapsed="true">
+                    <f:facet name="actions">
+                        <p:autoComplete value="#{orderController.employee}" completeMethod="#{orderController.completeEmployees}" style="float: right"
+                                        var="employee" itemLabel="#{employee.displayName}" itemValue="#{employee}" size="30"
+                                        converter="#{employeeConverter}">
+                            <p:ajax event="itemSelect" oncomplete="PF('employeePanelVar').slideDown();" update="employeePanel"/>
+                        </p:autoComplete>
+                        <p:outputLabel value="Search: " style="float: right; padding: 5px 10px;"/>
+                    </f:facet>
+                        <table>
+                            <tr >
+                                <td>
+                                    <p:outputLabel style="padding-left: 5px;"  value="First name"/>
+                                </td>
+                                <td>
+                                    <p:inputText value="#{orderController.employee.firstName}" disabled="true"/>
+                                </td>
+                                <td>
+                                    <p:outputLabel style="padding-left: 5px;"  value="Address"/>
+                                </td>
+                                <td>
+                                    <p:inputText value="#{orderController.employee.address}" disabled="true"/>
+                                </td>
+                                <td>
+                                    <p:outputLabel style="padding-left: 5px;"  value="Home phone"/>
+                                </td>
+                                <td>
+                                    <p:inputText value="#{orderController.employee.homePhone}" disabled="true"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p:outputLabel style="padding-left: 5px;"  value="Last name"/>
+                                </td>
+                                <td>
+                                    <p:inputText value="#{orderController.employee.lastName}" disabled="true"/>
+                                </td>
+                                <td>
+                                    <p:outputLabel style="padding-left: 5px;"  value="City"/>
+                                </td>
+                                <td>
+                                    <p:inputText value="#{orderController.employee.city}" disabled="true"/>
+                                </td>
+                                <td>
+                                    <p:outputLabel style="padding-left: 5px;"  value="Extension"/>
+                                </td>
+                                <td>
+                                    <p:inputText value="#{orderController.employee.extension}" disabled="true"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p:outputLabel style="padding-left: 5px;"  value="Title"/>
+                                </td>
+                                <td>
+                                    <p:inputText value="#{orderController.employee.title}" disabled="true"/>
+                                </td>
+                                <td>
+                                    <p:outputLabel style="padding-left: 5px;"  value="Region"/>
+                                </td>
+                                <td>
+                                    <p:inputText value="#{orderController.employee.region}" disabled="true"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p:outputLabel style="padding-left: 5px;"  value="Title of courtesy"/>
+                                </td>
+                                <td>
+                                    <p:inputText value="#{orderController.employee.titleOfCourtesy}" disabled="true"/>
+                                </td>
+                                <td>
+                                    <p:outputLabel style="padding-left: 5px;"  value="Postal code"/>
+                                </td>
+                                <td>
+                                    <p:inputText value="#{orderController.employee.postalCode}" disabled="true"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td/><td/>
+                                <td>
+                                    <p:outputLabel style="padding-left: 5px;"  value="Country"/>
+                                </td>
+                                <td>
+                                    <p:inputText value="#{orderController.employee.country}" disabled="true"/>
+                                </td>
+                            </tr>
+                        </table>
+                </p:panel>
+                <p:panel id="orderPanel" header="Order">
+                    <table>
+                        <tr>
+                            <td>
+                                <p:outputLabel style="padding-left: 5px;"  value="Order date"/>
+                            </td>
+                            <td>
+                                <p:calendar value="#{orderController.currentOrder.orderDate}" pattern="yyyy-MM-dd"  disabled="true"  />
+                            </td>
+                            <td>
+                                <p:outputLabel style="padding-left: 5px;"  value="Ship name"/>
+                            </td>
+                            <td>
+                                <p:inputText value="#{orderController.currentOrder.shipName}"/>
+                            </td>
+                            <td>
+                                <p:outputLabel style="padding-left: 5px;"  value="Ship region"/>
+                            </td>
+                            <td>
+                                <p:inputText value="#{orderController.currentOrder.shipRegion}"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p:outputLabel style="padding-left: 5px;"  value="Required date"/>
+                            </td>
+                            <td>
+                                <p:calendar value="#{orderController.currentOrder.requiredDate}" pattern="yyyy-MM-dd" mindate="today+2" />
+                            </td>
+                            <td>
+                                <p:outputLabel style="padding-left: 5px;"  value="Ship address"/>
+                            </td>
+                            <td>
+                                <p:inputText value="#{orderController.currentOrder.shipAddress}"/>
+                            </td>
+                            <td>
+                                <p:outputLabel style="padding-left: 5px;"  value="Ship postal code"/>
+                            </td>
+                            <td>
+                                <p:inputText value="#{orderController.currentOrder.shipPostalCode}"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p:outputLabel style="padding-left: 5px;"  value="Ship Via"/>
+                            </td>
+                            <td>
+                                <p:inputText value="#{orderController.currentOrder.shipVia == null ? '' : orderController.currentOrder.shipVia.companyName}"
+                                             style="width: 150px" disabled="true" />
+                                <p:commandButton icon="fa fa-edit" onclick="PF('shipperDialogVar').show();"/>
+                            </td>
+                            <td>
+                                <p:outputLabel style="padding-left: 5px;"  value="Ship city"/>
+                            </td>
+                            <td>
+                                <p:inputText value="#{orderController.currentOrder.shipCity}"/>
+                            </td>
+                            <td>
+                                <p:outputLabel style="padding-left: 5px;"  value="Ship country"/>
+                            </td>
+                            <td>
+                                <p:inputText value="#{orderController.currentOrder.shipCountry}"/>
+                            </td>
+                        </tr>
+                    </table>
+                </p:panel>
                 
                 <p:dataTable value="#{productController.basketList}" id="orderDataTable" var="orderItem" style="margin-top: 10px">
                     <f:facet name="header">
@@ -49,21 +263,24 @@
                         <p:outputLabel value="#{orderItem.name}"/>
                     </p:column>
                     <p:column width="200" headerText="Price">
-                        <p:outputLabel value="#{orderItem.price} "/>
-                        <p:outputLabel value="#{orderItem.currency}"/>
+                        <p:outputLabel value="#{orderItem.unitPrice} "/>
                     </p:column>
                     <p:column width="50" headerText="Count">
                         <p:outputLabel value="#{productController.orderMap.get(orderItem)}"/>
                     </p:column>
                     <p:column headerText="Total">
-                        <p:outputLabel value="#{productController.orderMap.get(orderItem)*orderItem.price} "/>
-                        <p:outputLabel value="#{orderItem.currency}"/>
+                        <p:outputLabel value="#{productController.orderMap.get(orderItem)*orderItem.unitPrice} "/>
                     </p:column>
                 </p:dataTable>
                 
                 <p:commandButton value="Continue shopping" onclick="PF('basketDialogVar').hide();PF('orderDialogVar').hide();" />
-                <p:commandButton value="Order products" style="float: right" actionListener="#{orderController.order()}" update="basketDataTable, orderDataTable" onclick="PF('basketDialogVar').hide();PF('orderDialogVar').hide();" />
+                <p:commandButton value="Order products" style="float: right" actionListener="#{orderController.order()}" update="basketDataTable, orderDataTable" oncomplete="PF('basketDialogVar').hide();PF('orderDialogVar').hide();" />
             </p:outputPanel>
         </h:form>
+
+
+        <p:dialog widgetVar="shipperDialogVar" header="Shippers" closable="true" modal="true" appendTo="@(body)" width="600" resizable="false" >
+            <ui:include src="shipperDialog.xhtml"/>
+        </p:dialog>
     </h:body>
 </html>

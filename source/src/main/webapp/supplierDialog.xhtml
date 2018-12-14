@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+</h:head>
+<h:body>
+    <h:form prependId="false">
+        <p:outputPanel>
+            <p:dataTable value="#{supplierController.supplierList}" id="supplierDataTable" var="supplier" style="margin-top: 10px" scrollable="true" scrollHeight="600">
+                <f:facet name="header">
+                    <p:outputLabel value="Suppliers" />
+                </f:facet>
+                <p:column headerText="Company name">
+                    <p:outputLabel value="#{supplier.companyName}"/>
+                </p:column>
+                <p:column headerText="Contact name">
+                    <p:outputLabel value="#{supplier.contactName}"/>
+                </p:column>
+                <p:column headerText="Contact title">
+                    <p:outputLabel value="#{supplier.contactTitle}"/>
+                </p:column>
+                <p:column headerText="Address">
+                    <p:outputLabel value="#{supplier.address} #{supplier.city} #{supplier.region} #{supplier.postalCode} #{supplier.country}"/>
+                </p:column>
+                <p:column headerText="Phone">
+                    <p:outputLabel value="#{supplier.phone}"/>
+                </p:column>
+                <p:column headerText="Fax">
+                    <p:outputLabel value="#{supplier.fax}"/>
+                </p:column>
+                <p:column headerText="Home page">
+                    <p:outputLabel value="#{supplier.homePage}"/>
+                </p:column>
+                <p:column headerText="Products">
+                    <p:commandButton value="Show" actionListener="#{supplierController.updateProductList(supplier)}" update="supplierProductsDataTable" onclick="PF('supplierProductsDialogVar').show();"/>
+                </p:column>
+                <f:facet name="footer">
+                    <p:commandButton value="#{supplierController.showAll ? 'Show selected': 'Show all'}" style="text-align: right" actionListener="#{supplierController.switchBetweenAllAndSelected()}" update="supplierDataTable" onclick="PF('supplierDialogVar').initPosition();"/>
+                </f:facet>
+            </p:dataTable>
+            <p:commandButton value="Close" style="float: right" onclick="PF('supplierDialogVar').hide();" />
+        </p:outputPanel>
+    </h:form>
+
+    <p:dialog widgetVar="supplierProductsDialogVar" header="Supplier Products" closable="true" modal="true" appendTo="@(body)" width="1100" resizable="false" >
+        <ui:include src="supplierProductsDialog.xhtml"/>
+    </p:dialog>
+</h:body>
+</html>

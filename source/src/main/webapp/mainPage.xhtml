@@ -9,20 +9,24 @@
     </h:head>
     <h:body>
         <h:form>
-            
-            <p:layout fullPage="true">
+            <p:layout id="layout" fullPage="true">
                 <p:growl id="msgs" showDetail="true" autoUpdate="true"/>
-                <p:layoutUnit position="north">
-                    <p:commandButton value="Show basket" update="basketDataTable" oncomplete="PF('baskedDialogVar').show();" />
+                <p:layoutUnit position="north" style="overflow: hidden">
+                    <p:commandButton value="Show basket" update="basketDataTable" oncomplete="PF('basketDialogVar').show();" />
+                    <p:commandButton value="Show orders"
+                                     oncomplete="PF('orderHistoryDialogVar').show();"  update="orderHistoryDataTable"
+                                     style="float: right;" />
                 </p:layoutUnit>
 
                 <p:layoutUnit position="west" size="175" header="Categories">
                     <p:menu id="menuPanel" style="width: 150px" model="#{categoryController.categoryMenu}"  />
                 </p:layoutUnit>
 
-                <p:layoutUnit position="center" >
+                <p:layoutUnit position="center">
                     <f:facet name="header" >
-                        <p:outputLabel id="centerPanelHeader"  value="Selected category > #{categoryController.selectedCategory.name}" rendered="#{categoryController.selectedCategory != null}"/>
+                        <p:outputPanel id="centerPanelHeader">
+                            <p:outputLabel value="Selected category > #{categoryController.selectedCategory.name}" rendered="#{categoryController.selectedCategory != null}"/>
+                        </p:outputPanel>
                     </f:facet>
                     <p:outputPanel id="centerPanel">
                         <p:outputLabel value="Welcome to the Simple shop. Please select a product category." rendered="#{categoryController.selectedCategory == null}"/>
@@ -33,32 +37,67 @@
                             <f:facet name="header">
                                 <p:outputLabel value="Products" />
                             </f:facet>
-                            <p:column width="100" headerText="Category">
-                                <p:outputLabel value="#{product.category.name}"/>
-                            </p:column>
                             <p:column headerText="Name">
                                 <p:outputLabel value="#{product.name}"/>
                             </p:column>
-                            <p:column width="200" headerText="Price">
-                                <p:outputLabel value="#{product.price} "/>
-                                <p:outputLabel value="#{product.currency}"/>
+                            <p:column width="40" headerText="Price">
+                                <p:outputLabel value="#{product.unitPrice}"/>
+                            </p:column>
+                            <p:column headerText="Quantity/Unit">
+                                <p:outputLabel value="#{product.quantityPerUnit}"/>
+                            </p:column>
+                            <p:column headerText="In stock">
+                                <p:outputLabel value="#{product.unitsInStock}"/>
+                            </p:column>
+                            <p:column headerText="On order">
+                                <p:outputLabel value="#{product.unitsOnOrder}"/>
+                            </p:column>
+                            <p:column headerText="Reorder level">
+                                <p:outputLabel value="#{product.reorderLevel}"/>
+                            </p:column>
+                            <p:column headerText="Discontinued">
+                                <p:selectBooleanCheckbox  value="#{product.discontinued}" disabled="true" />
+                            </p:column>
+                            <p:column headerText="Customers">
+                                <p:commandButton value="Show" actionListener="#{productController.updateCustomers(product)}" update="customersDataTable" onclick="PF('customerDialogVar').show();"/>
+                            </p:column>
+                            <p:column headerText="Employees">
+                                <p:commandButton value="Show" actionListener="#{productController.updateEmployees(product)}" update="employeesDataTable" onclick="PF('employeeDialogVar').show();"/>
+                            </p:column>
+                            <p:column headerText="Suppliers">
+                                <p:commandButton value="Show" actionListener="#{supplierController.selectSupplier(product.supplier)}" update="supplierDataTable" onclick="PF('supplierDialogVar').show();"/>
                             </p:column>
                             <p:column width="180" headerText="Buy">
-                                <p:commandButton value="Add to basket" actionListener="#{productController.addToBasket(product)}" update="basketDataTable"/>
+                                <p:commandButton value="Add to basket"
+                                                 actionListener="#{productController.addToBasket(product)}"
+                                                 update="@this, productDataTable, basketDataTable"
+                                                 disabled="#{productController.boughtAll(product)}"
+                                />
                             </p:column>
                         </p:dataTable>
                     </p:outputPanel>
                 </p:layoutUnit>
-
             </p:layout>
         </h:form>
-        
-        <p:dialog widgetVar="baskedDialogVar" header="Basket" closable="true" modal="true" width="1100" resizable="false" >
+
+        <p:dialog widgetVar="customerDialogVar" header="Customers" closable="true" modal="true" width="1100" resizable="false" >
+            <ui:include src="customerDialog.xhtml"/>
+        </p:dialog>
+
+        <p:dialog widgetVar="employeeDialogVar" header="Employees" closable="true" modal="true" width="1600" resizable="false" >
+            <ui:include src="employeeDialog.xhtml"/>
+        </p:dialog>
+
+        <p:dialog widgetVar="supplierDialogVar" header="Suppliers" closable="true" modal="true" width="1100" resizable="false" >
+            <ui:include src="supplierDialog.xhtml"/>
+        </p:dialog>
+
+        <p:dialog widgetVar="basketDialogVar" header="Basket" closable="true" modal="true" width="1100" resizable="false" >
             <ui:include src="basketDialog.xhtml"/>
         </p:dialog>
-        
-        <p:dialog widgetVar="orderDialogVar" header="Order" closable="true" modal="true" width="1100" resizable="false" >
-            <ui:include src="orderDialog.xhtml"/>
+
+        <p:dialog widgetVar="orderHistoryDialogVar" header="Order history" closable="true" modal="true" width="1400" resizable="false" >
+            <ui:include src="orderHistoryDialog.xhtml"/>
         </p:dialog>
     </h:body>
 </html>

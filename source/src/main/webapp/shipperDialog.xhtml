@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+>
+<h:head>
+</h:head>
+<h:body>
+    <h:form prependId="false">
+        <p:outputPanel>
+            <p:dataTable value="#{orderController.shipperList}" id="shipperListDataTable" var="shipper" style="margin-top: 10px">
+                <f:facet name="header">
+                    <p:outputLabel value="Shipper" />
+                </f:facet>
+                <p:column headerText="Company name">
+                    <p:outputLabel value="#{shipper.companyName}"/>
+                </p:column>
+                <p:column headerText="Phone">
+                    <p:outputLabel value="#{shipper.phone}"/>
+                </p:column>
+                <p:column>
+                    <p:commandButton value="Select" actionListener="#{orderController.selectShipper(shipper)}" update="orderPanel" oncomplete="PF('shipperDialogVar').hide()"/>
+                </p:column>
+            </p:dataTable>
+            <p:commandButton value="Close" style="float: right" onclick="PF('shipperDialogVar').hide();" />
+        </p:outputPanel>
+    </h:form>
+</h:body>
+</html>

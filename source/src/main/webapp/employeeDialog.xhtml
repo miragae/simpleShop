@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+>
+<h:head>
+</h:head>
+<h:body>
+    <h:form prependId="false">
+        <p:outputPanel>
+            <p:dataTable value="#{productController.employeeList}" id="employeesDataTable" var="employee" style="margin-top: 10px" scrollable="true" scrollHeight="600">
+                <f:facet name="header">
+                    <p:outputLabel value="Employees who sold this product" />
+                </f:facet>
+                <p:column headerText="First name">
+                    <p:outputLabel value="#{employee.firstName}"/>
+                </p:column>
+                <p:column headerText="Last name">
+                    <p:outputLabel value="#{employee.lastName}"/>
+                </p:column>
+                <p:column headerText="Title">
+                    <p:outputLabel value="#{employee.title}"/>
+                </p:column>
+                <p:column headerText="Title of courtesy">
+                    <p:outputLabel value="#{employee.titleOfCourtesy}"/>
+                </p:column>
+                <p:column headerText="Birth date">
+                    <p:outputLabel value="#{employee.birthDate}"/>
+                </p:column>
+                <p:column headerText="Hire date">
+                    <p:outputLabel value="#{employee.hireDate}"/>
+                </p:column>
+                <p:column headerText="Address" width="200">
+                    <p:outputLabel value="#{employee.address} #{employee.city} #{employee.region} #{employee.postalCode} #{employee.country}"/>
+                </p:column>
+                <p:column headerText="Home phone">
+                    <p:outputLabel value="#{employee.homePhone}"/>
+                </p:column>
+                <p:column headerText="Extension">
+                    <p:outputLabel value="#{employee.extension}"/>
+                </p:column>
+                <p:column headerText="Photo">
+                    <p:outputLabel value="#{employee.photo}"/>
+                </p:column>
+                <p:column headerText="Notes">
+                    <p:commandButton id="employeeNotes" icon="fa fa-file-text-o" />
+                    <p:overlayPanel id="notesPanel" for="employeeNotes" hideEffect="fade" style="max-width: 400px;" >
+                        <p:outputLabel value="#{employee.notes}" />
+                    </p:overlayPanel>
+                </p:column>
+                <p:column headerText="Reports to">
+                    <p:outputLabel value="#{employee.reportsTo == null ? '' : employee.reportsTo.firstName} #{employee.reportsTo == null ? '' : employee.reportsTo.lastName}"/>
+                </p:column>
+            </p:dataTable>
+            <p:commandButton value="Close" style="float: right" onclick="PF('employeeDialogVar').hide();" />
+        </p:outputPanel>
+    </h:form>
+</h:body>
+</html>

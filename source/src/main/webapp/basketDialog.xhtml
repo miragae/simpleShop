@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:f="http://java.sun.com/jsf/core"      
+      xmlns:f="http://java.sun.com/jsf/core"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
     <h:head>
     </h:head>
     <h:body>
@@ -20,22 +21,27 @@
                         <p:outputLabel value="#{basketItem.name}"/>
                     </p:column>
                     <p:column width="200" headerText="Price">
-                        <p:outputLabel value="#{basketItem.price} "/>
-                        <p:outputLabel value="#{basketItem.currency}"/>
+                        <p:outputLabel value="#{basketItem.unitPrice} "/>
                     </p:column>
-                    <p:column width="120" headerText="Count">
+                    <p:column headerText="In stock">
+                        <p:outputLabel value="#{basketItem.unitsInStock}"/>
+                    </p:column>
+                    <p:column width="130" headerText="Count" style="text-align: center;">
                         <p:commandButton value="-" style="margin-right: 5px" actionListener="#{productController.removeFromBasket(basketItem)}" update="basketDataTable"/>
                         <p:outputLabel value="#{productController.orderMap.get(basketItem)}"/>
-                        <p:commandButton value="+" style="margin-left: 5px" actionListener="#{productController.addToBasket(basketItem)}" update="basketDataTable"/>
+                        <p:commandButton value="+" style="margin-left: 5px" actionListener="#{productController.addToBasket(basketItem)}" update="basketDataTable" disabled="#{basketItem.unitsInStock == 0 || productController.boughtAll(basketItem)}"/>
                     </p:column>
                     <p:column headerText="Total">
-                        <p:outputLabel value="#{productController.orderMap.get(basketItem)*basketItem.price} "/>
-                        <p:outputLabel value="#{basketItem.currency}"/>
+                        <p:outputLabel value="#{productController.orderMap.get(basketItem)*basketItem.unitPrice} "/>
                     </p:column>
                 </p:dataTable>
                 <p:commandButton value="Continue shopping" onclick="PF('basketDialogVar').hide();" />
-                <p:commandButton value="Complete order" style="float: right" update="orderDataTable" onclick="PF('orderDialogVar').show();" />
+                <p:commandButton value="Complete order" style="float: right" update="orderDialogPanel" onclick="PF('orderDialogVar').show();" />
             </p:outputPanel>
         </h:form>
+
+        <p:dialog widgetVar="orderDialogVar" header="Order" closable="true" modal="true" appendToBody="true" appendTo="@(body)" height="800" width="1100"  resizable="false" >
+            <ui:include src="orderDialog.xhtml"/>
+        </p:dialog>
     </h:body>
 </html>

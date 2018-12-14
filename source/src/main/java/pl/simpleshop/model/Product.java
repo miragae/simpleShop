@@ -1,46 +1,36 @@
 package pl.simpleshop.model;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
-/**
- *
- * @author Michał Lal
- */
+
 @Entity
+@Table(name = "products")
 public class Product implements Serializable {
 
-    private Long id;
+    private int id;
     private String name;
+    private Supplier supplier;
     private Category category;
-    private Currency currency;
-    private BigDecimal price;
-
-    public Product() {
-    }
-
-    public Product(String name) {
-        this.name = name;
-    }
+    private String quantityPerUnit;
+    private Float unitPrice;
+    private Short unitsInStock;
+    private Short unitsOnOrder;
+    private Short reorderLevel;
+    private boolean discontinued;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    public Long getId() {
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ProductID")
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
+    @Column(name = "ProductName")
     public String getName() {
         return name;
     }
@@ -50,6 +40,17 @@ public class Product implements Serializable {
     }
 
     @ManyToOne
+    @JoinColumn(name = "SupplierID")
+    public Supplier getSupplier() {
+        return supplier;
+    }
+
+    public void setSupplier(Supplier supplier) {
+        this.supplier = supplier;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "CategoryID")
     public Category getCategory() {
         return category;
     }
@@ -58,22 +59,51 @@ public class Product implements Serializable {
         this.category = category;
     }
 
-    @Enumerated(EnumType.STRING)
-    public Currency getCurrency() {
-        return currency;
+    public String getQuantityPerUnit() {
+        return quantityPerUnit;
     }
 
-    public void setCurrency(Currency currency) {
-        this.currency = currency;
+    public void setQuantityPerUnit(String quantityPerUnit) {
+        this.quantityPerUnit = quantityPerUnit;
     }
 
-    @Column(name="price", precision=14, scale=2, columnDefinition="DECIMAL(14,2)")
-    public BigDecimal getPrice() {
-        return price;
+    public Float getUnitPrice() {
+        return unitPrice;
     }
 
-    public void setPrice(BigDecimal price) {
-        this.price = price;
+    public void setUnitPrice(Float unitPrice) {
+        this.unitPrice = unitPrice;
     }
 
+    public Short getUnitsInStock() {
+        return unitsInStock;
+    }
+
+    public void setUnitsInStock(Short unitsInStock) {
+        this.unitsInStock = unitsInStock;
+    }
+
+    public Short getUnitsOnOrder() {
+        return unitsOnOrder;
+    }
+
+    public void setUnitsOnOrder(Short unitsOnOrder) {
+        this.unitsOnOrder = unitsOnOrder;
+    }
+
+    public Short getReorderLevel() {
+        return reorderLevel;
+    }
+
+    public void setReorderLevel(Short reorderLevel) {
+        this.reorderLevel = reorderLevel;
+    }
+
+    public boolean getDiscontinued() {
+        return discontinued;
+    }
+
+    public void setDiscontinued(boolean discontinued) {
+        this.discontinued = discontinued;
+    }
 }

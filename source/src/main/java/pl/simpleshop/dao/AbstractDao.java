@@ -7,10 +7,6 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
-/**
- *
- * @author Michał Lal
- */
 public abstract class AbstractDao<T> {
     
     @PersistenceContext
@@ -19,7 +15,18 @@ public abstract class AbstractDao<T> {
     public void save(T item) {
         em.persist(item);
     }
-    
+
+    public void update(T item) {
+        em.merge(item);
+    }
+
+    public void remove(T item) {
+        em.remove(
+                em.contains(item)
+                ? item
+                : em.merge(item)
+        );
+    }
     public List<T> getAll() {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<T> query = cb.createQuery(getEntityClass());
@@ -28,13 +35,14 @@ public abstract class AbstractDao<T> {
         return em.createQuery(query).getResultList();
     }
     
-    public T find(Long id) {
+    public T find(int id) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<T> query = cb.createQuery(getEntityClass());
         Root<T> from = query.from(getEntityClass());
         query.where(cb.equal(from.get("id"), id));
         query.select(from);
-        return getEntityManager().createQuery(query).getSingleResult();
+        List<T> resultList = getEntityManager().createQuery(query).getResultList();
+        return resultList.size() > 0 ? resultList.get(0) : null;
     }
     
     protected EntityManager getEntityManager(){
