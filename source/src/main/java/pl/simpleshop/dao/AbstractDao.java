@@ -17,19 +17,19 @@ public abstract class AbstractDao<T> {
     private EntityManager em;
 
     public void save(T item) {
-        em.persist(item);
+        getEntityManager().persist(item);
     }
     
     public List<T> getAll() {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<T> query = cb.createQuery(getEntityClass());
         Root<T> from = query.from(getEntityClass());
         query.select(from);
-        return em.createQuery(query).getResultList();
+        return getEntityManager().createQuery(query).getResultList();
     }
     
     public T find(Long id) {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<T> query = cb.createQuery(getEntityClass());
         Root<T> from = query.from(getEntityClass());
         query.where(cb.equal(from.get("id"), id));

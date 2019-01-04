@@ -31,6 +31,11 @@ public class Product implements Serializable {
         this.name = name;
     }
 
+    public Product(String name, Category category) {
+        this.name = name;
+        this.category = category;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     public Long getId() {

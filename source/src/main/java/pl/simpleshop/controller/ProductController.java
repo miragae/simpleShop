@@ -1,19 +1,15 @@
 package pl.simpleshop.controller;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
-import static org.primefaces.component.contextmenu.ContextMenu.PropertyKeys.event;
-import pl.simpleshop.dao.CategoryDaoLocal;
 import pl.simpleshop.dao.ProductDaoLocal;
 import pl.simpleshop.model.Category;
 import pl.simpleshop.model.Product;
@@ -58,22 +54,33 @@ public class ProductController implements Serializable{
         
         int count = orderMap.containsKey(product) ? orderMap.get(product) : 0;
         orderMap.put(product, count + 1);
-        FacesMessage msg = new FacesMessage("Added to basket", product.getName());
-        FacesContext.getCurrentInstance().addMessage(null, msg);
+        addFacesMessage("Added to basket", product.getName());
     }
     
     public void removeFromBasket(Product product){
+        if(orderMap == null){
+            orderMap = new HashMap<>();
+        }
+        
         int count = orderMap.containsKey(product) ? orderMap.get(product) : 0;
         if(count <= 1){
             orderMap.remove(product);
         } else {
             orderMap.put(product, count - 1);
         }
-        FacesMessage msg = new FacesMessage("Removed from basket", product.getName());
-        FacesContext.getCurrentInstance().addMessage(null, msg);
+        addFacesMessage("Removed from basket", product.getName());
     }
     public List<Product> getBasketList(){
         return orderMap == null ? null : orderMap.keySet().stream().collect(Collectors.toList());
+    }
+    
+    private void addFacesMessage(String summary, String detail){
+        FacesMessage msg = new FacesMessage(summary, detail);
+        FacesContext currentInstance = FacesContext.getCurrentInstance();
+        if(currentInstance != null){
+            currentInstance.addMessage(null, msg);
+        }
+        
     }
 }
 
