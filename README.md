@@ -5,15 +5,15 @@ Allows customers to order products pre-defined in database.
 
 ## To successfully deploy simpleShop application you need to:
 
-1. Download Wildfly version 10.1.0 final
+1. Download Wildfly version 15.0.0 final
 	* extract Wildfly
 	* add user using bin/add-user.bat
 	* start Wildfly using bin/standalone.bat
 
-2. Download MariaDB 10.2.6 GA
+2. Download MariaDB 10.3.11
 	* run provided script.sql
 
-2. Download MariaDB driver (mariadb-java-client-2.0.1.jar)
+2. Download MariaDB driver (mariadb-java-client-2.3.0.jar)
 	* go to localhost:9990
  	* deploy it using Wildfly
 
@@ -27,4 +27,4 @@ Allows customers to order products pre-defined in database.
 	* go to location of src folder
 	* run command "mvn wildfly:deploy"
 
-5. Go to localhost:8080/SimpleShop-1.0/
+5. Go to localhost:8080/SimpleShop/
