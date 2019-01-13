@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+</h:head>
+<h:body>
+    <h:form prependId="false">
+        <p:outputPanel>
+            <p:dataTable value="#{orderController.orderList}" id="orderDataTable" var="orderItem" style="margin-top: 10px">
+                <f:facet name="header">
+                    <p:outputLabel value="Orders" />
+                </f:facet>
+                <p:column style="width: 16px">
+                    <p:rowToggler />
+                </p:column>
+                <p:column headerText="Id">
+                    <p:outputLabel value="#{orderItem.id}"/>
+                </p:column>
+                <p:column headerText="First name">
+                    <p:outputLabel value="#{orderItem.firstName}"/>
+                </p:column>
+                <p:column headerText="Last name">
+                    <p:outputLabel value="#{orderItem.lastName} "/>
+                </p:column>
+                <p:column headerText="Address">
+                    <p:outputLabel value="#{orderItem.address} "/>
+                </p:column>
+                <p:rowExpansion>
+                    <p:dataTable value="#{orderController.getOrderPositions(orderItem)}" var="orderPosition">
+                        <p:column headerText="Product">
+                            <p:outputLabel value="#{orderPosition.product.name}"/>
+                        </p:column>
+                        <p:column headerText="Count">
+                            <p:outputLabel value="#{orderPosition.count}"/>
+                        </p:column>
+                    </p:dataTable>
+                </p:rowExpansion>
+            </p:dataTable>
+        </p:outputPanel>
+    </h:form>
+</h:body>
+</html>

@@ -2,6 +2,7 @@ package pl.simpleshop.controller;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
@@ -30,6 +31,8 @@ public class OrderController implements Serializable{
     private ProductController productController;
     private SimpleOrder currentOrder = null;
 
+    private List<SimpleOrder> orderList;
+
     public SimpleOrder getCurrentOrder() {
         if(currentOrder == null){
             currentOrder = new SimpleOrder();
@@ -40,7 +43,19 @@ public class OrderController implements Serializable{
     public void setCurrentOrder(SimpleOrder currentOrder) {
         this.currentOrder = currentOrder;
     }
-    
+
+    public List<SimpleOrder> getOrderList() {
+        return orderList;
+    }
+
+    public void updateOrderList() {
+        orderList = simpleOrderDao.getAll();
+    }
+
+    public List<SimpleOrderPosition> getOrderPositions(SimpleOrder order) {
+        return simpleOrderPositionDao.getPositionsForOrder(order);
+    }
+
     public void order(){
         simpleOrderDao.save(currentOrder);
         Map<Product,Integer> orderedProductsMap = productController.getOrderMap();

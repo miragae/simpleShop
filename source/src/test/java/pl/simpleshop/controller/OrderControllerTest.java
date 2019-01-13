@@ -17,6 +17,7 @@ import static org.mockito.Mockito.*;
 import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
+import pl.simpleshop.dao.SimpleOrderDaoLocal;
 import pl.simpleshop.dao.SimpleOrderPositionDaoLocal;
 import pl.simpleshop.model.Product;
 import pl.simpleshop.model.SimpleOrder;
@@ -29,6 +30,8 @@ public class OrderControllerTest {
 
     @Mock
     private SimpleOrderPositionDaoLocal simpleOrderPositionDao;
+    @Mock
+    private SimpleOrderDaoLocal simpleOrderDao;
     @Mock
     private ProductController productController;
 

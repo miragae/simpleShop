@@ -1,0 +1,47 @@
+version: '3'
+
+services:
+
+  # mvn:
+  #   container_name: "maven"
+  #   image: "maven:3.6-jdk-8-slim"
+  #    build:
+  #      context: ../
+  #      dockerfile: docker/Dockerfile-maven
+
+  app:
+    build:
+         context: ../
+         dockerfile: docker/Dockerfile #TODO start from source
+    container_name: "wildfly"
+    image: "wildfly"
+    environment:
+      - WILDFLY_USER=admin
+      - WILDFLY_PASS=password
+      - DB_USER=maria
+      - DB_PASS=maria
+      - DB_URI=db:3306
+    depends_on:
+      - db
+      # - mvn
+    ports:
+      - "8080:8080" # application
+      - "9990:9990" # admin console
+
+  db:
+    container_name: "mariadb"
+    image: "mariadb:latest"
+    environment:
+      - MYSQL_DATABASE=shopdb
+      - MYSQL_USER=maria
+      - MYSQL_PASSWORD=maria
+      - MYSQL_ROOT_PASSWORD=root
+    volumes:
+      - ../script/:/docker-entrypoint-initdb.d/ # init database
+    ports:
+      - "3306:3306"
+
+
+networks:
+    default:
+        driver: bridge
