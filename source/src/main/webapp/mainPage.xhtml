@@ -13,8 +13,8 @@
             <p:layout fullPage="true">
                 <p:growl id="msgs" showDetail="true" autoUpdate="true"/>
                 <p:layoutUnit position="north">
-                    <p:commandButton value="Show basket" update="basketDataTable" oncomplete="PF('baskedDialogVar').show();" />
-                    <p:commandButton value="Show orders" update="orderDataTable" style="float: right" oncomplete="PF('orderListDialogVar').show();" />
+                    <p:commandButton value="Show orders" actionListener="#{orderController.updateOrderList}" update="orderListDataTable" oncomplete="PF('orderListDialogVar').show();" />
+                    <p:commandButton value="Show basket" update="basketDataTable" style="float: right" oncomplete="PF('baskedDialogVar').show();" />
                 </p:layoutUnit>
 
                 <p:layoutUnit position="west" size="175" header="Categories">
@@ -62,7 +62,8 @@
             <ui:include src="orderDialog.xhtml"/>
         </p:dialog>
 
-        <p:dialog widgetVar="orderListDialogVar" header="Orders" closable="true" modal="true" width="1100" resizable="false" >
+        <p:dialog widgetVar="orderListDialogVar" header="Orders" closable="true" modal="true" width="1100" resizable="false"
+                  style="overflow: scroll; max-height: 500px;" >
             <ui:include src="orderListDialog.xhtml"/>
         </p:dialog>
     </h:body>

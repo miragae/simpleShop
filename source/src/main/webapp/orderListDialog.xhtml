@@ -9,13 +9,10 @@
 <h:body>
     <h:form prependId="false">
         <p:outputPanel>
-            <p:dataTable value="#{orderController.orderList}" id="orderDataTable" var="orderItem" style="margin-top: 10px">
+            <p:dataTable value="#{orderController.orderList}" id="orderListDataTable" var="orderItem" style="margin-top: 10px">
                 <f:facet name="header">
                     <p:outputLabel value="Orders" />
                 </f:facet>
-                <p:column style="width: 16px">
-                    <p:rowToggler />
-                </p:column>
                 <p:column headerText="Id">
                     <p:outputLabel value="#{orderItem.id}"/>
                 </p:column>
@@ -28,13 +25,27 @@
                 <p:column headerText="Address">
                     <p:outputLabel value="#{orderItem.address} "/>
                 </p:column>
+                <p:column headerText="Order positions">
+                    <p:rowToggler />
+                </p:column>
                 <p:rowExpansion>
                     <p:dataTable value="#{orderController.getOrderPositions(orderItem)}" var="orderPosition">
+                        <p:column width="100" headerText="Category">
+                            <p:outputLabel value="#{orderPosition.product.category.name}"/>
+                        </p:column>
                         <p:column headerText="Product">
                             <p:outputLabel value="#{orderPosition.product.name}"/>
                         </p:column>
+                        <p:column headerText="Price">
+                            <p:outputLabel value="#{orderPosition.product.price} "/>
+                            <p:outputLabel value="#{orderPosition.product.currency}"/>
+                        </p:column>
                         <p:column headerText="Count">
                             <p:outputLabel value="#{orderPosition.count}"/>
+                        </p:column>
+                        <p:column headerText="Total">
+                            <p:outputLabel value="#{orderPosition.count*orderPosition.product.price} "/>
+                            <p:outputLabel value="#{orderPosition.product.currency}"/>
                         </p:column>
                     </p:dataTable>
                 </p:rowExpansion>
